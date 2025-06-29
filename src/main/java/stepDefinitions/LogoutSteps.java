@@ -14,8 +14,7 @@ public class LogoutSteps extends BaseTest {
 
     @When("The user opens the menu")
     public void the_user_opens_the_menu() {
-        productPage.tapBurgeButton();
-
+        productPage.tapBurgerButton();
     }
 
     @When("The user taps the logout option")
