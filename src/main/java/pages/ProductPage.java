@@ -10,6 +10,7 @@ public class ProductPage extends BasePage {
     private final By addToCartBtn = AppiumBy.androidUIAutomator("new UiSelector().text(\"AÑADIR A CARRITO\")");
     private final By removerBtn = AppiumBy.androidUIAutomator("new UiSelector().text(\"REMOVER\")");
     private final By cartIcon = AppiumBy.androidUIAutomator("new UiSelector().description(\"test-Carrito\")");
+    private final By burgerBtn = AppiumBy.androidUIAutomator("new UiSelector().description(\"test-Menu\")");
 
     public ProductPage(AndroidDriver driver) {
         super(driver);
@@ -36,8 +37,6 @@ public class ProductPage extends BasePage {
     }
 
 
-
-
     public boolean isTappedAddToCartBtn() {
         WebElement removeBtn = wait.waitUntilVisible(removerBtn, 15);
         return removeBtn.isEnabled();
@@ -47,5 +46,11 @@ public class ProductPage extends BasePage {
         WebElement cart = wait.waitForElement(cartIcon, 10);
         cart.click();
         return new CartPage(driver);
+    }
+
+    public MenuPage tapBurgeButton() {
+        WebElement burgerButton = wait.waitForElement(burgerBtn, 10);
+        burgerButton.click();
+        return new MenuPage(driver);
     }
 }

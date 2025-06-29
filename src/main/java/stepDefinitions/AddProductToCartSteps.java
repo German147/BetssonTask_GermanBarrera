@@ -7,7 +7,7 @@ import org.testng.Assert;
 import pages.CartPage;
 import pages.ProductPage;
 
-public class AddProductToCart extends BaseTest {
+public class AddProductToCartSteps extends BaseTest {
 
     ProductPage productPage = new ProductPage(getDriver());
 
