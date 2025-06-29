@@ -9,7 +9,6 @@ import org.openqa.selenium.WebElement;
 
 public class ValidateNavigationPage extends BasePage {
 
-    private final By appImage = AppiumBy.androidUIAutomator("new UiSelector().className(\"android.widget.ImageView\").instance(0)");
     private final By firstProduct = AppiumBy.androidUIAutomator("new UiSelector().className(\"android.widget.ImageView\").instance(6)");
     private final By productText = AppiumBy.androidUIAutomator("new UiSelector().text(\"Camisa Sauce Labs Bolt\")");
 
