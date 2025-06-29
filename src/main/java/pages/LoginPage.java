@@ -1,29 +1,29 @@
 package pages;
 
 import io.appium.java_client.AppiumBy;
-import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.testng.Assert;
-import elementsUtils.WaitingMethods;
 
-public class LoginPage {
+public class LoginPage extends BasePage {
 
-    private AppiumDriver driver;
-    private WaitingMethods wait;
-
-    public LoginPage(AppiumDriver driver) {
-        this.driver = driver;
-        this.wait = new WaitingMethods(driver); // updated to receive driver
-    }
-
-    // Locators
     private final By usernameField = AppiumBy.accessibilityId("test-Usuario");
     private final By passwordField = AppiumBy.accessibilityId("test-Contraseña");
     private final By loginButton = AppiumBy.xpath("//android.widget.TextView[@text=\"LOGIN\"]");
-    private final By errorMessage = AppiumBy.xpath("//android.widget.TextView[contains(@text, 'Username and password')]");
+    private final By errorMessage = AppiumBy
+            .androidUIAutomator("new UiSelector().text(\"El usuario y contraseña no coinciden con ningun usuario en este servicio.\")");
+    private final By productPageText = AppiumBy.androidUIAutomator("new UiSelector().text(\"PRODUCTOS\")");
 
-    // Actions
+    public LoginPage(AndroidDriver driver) {
+        super(driver);
+    }
+
+    public boolean isAppLaunched() {
+        WebElement image = wait.waitUntilVisible(AppiumBy
+                .androidUIAutomator("new UiSelector().className(\"android.widget.ImageView\").instance(0)"), 10);
+        return image.isDisplayed();
+    }
+
     public void enterUsername(String username) {
         WebElement user = wait.waitUntilVisible(usernameField, 10);
         user.clear();
@@ -37,7 +37,6 @@ public class LoginPage {
     }
 
     public void tapLoginButton() {
-        driver.hideKeyboard();
         WebElement loginBtn = wait.waitUntilClickable(loginButton, 10);
         loginBtn.click();
     }
@@ -45,15 +44,23 @@ public class LoginPage {
     public void loginWith(String username, String password) {
         enterUsername(username);
         enterPassword(password);
-        tapLoginButton();
     }
 
     public boolean isErrorMessageDisplayed() {
         return wait.waitUntilVisible(errorMessage, 10).isDisplayed();
     }
 
-    public void assertErrorMessageVisible(String outcomeMsg) {
-        WebElement error = wait.waitUntilVisible(errorMessage, 10);
-        Assert.assertTrue(error.isDisplayed(), outcomeMsg);
+    public String errorMessageVisible() {
+        WebElement msg = wait.waitUntilVisible(errorMessage, 15);
+        return msg.getText();
+    }
+
+    public void clickLoginButton() {
+        tapLoginButton();
+    }
+
+    public String productPageText() {
+        WebElement productText = wait.waitUntilVisible(productPageText, 15);
+        return productText.getText();
     }
 }
