@@ -1,8 +1,11 @@
 package pages;
 
+import exceptions.ElementNotClickableException;
+import exceptions.LoginFailedException;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 
 public class LoginPage extends BasePage {
@@ -37,17 +40,12 @@ public class LoginPage extends BasePage {
     }
 
     public void tapLoginButton() {
-        WebElement loginBtn = wait.waitUntilClickable(loginButton, 10);
-        loginBtn.click();
-    }
-
-    public void loginWith(String username, String password) {
-        enterUsername(username);
-        enterPassword(password);
-    }
-
-    public boolean isErrorMessageDisplayed() {
-        return wait.waitUntilVisible(errorMessage, 10).isDisplayed();
+        try {
+            WebElement loginBtn = wait.waitUntilClickable(loginButton, 10);
+            loginBtn.click();
+        } catch (TimeoutException e) {
+            throw new ElementNotClickableException("Login button was not clicked." + "Locator: " + loginButton);
+        }
     }
 
     public String errorMessageVisible() {
@@ -60,7 +58,11 @@ public class LoginPage extends BasePage {
     }
 
     public String productPageText() {
-        WebElement productText = wait.waitUntilVisible(productPageText, 15);
-        return productText.getText();
+        try {
+            WebElement productText = wait.waitUntilVisible(productPageText, 15);
+            return productText.getText();
+        } catch (TimeoutException e) {
+            throw new LoginFailedException("Login was not executed");
+        }
     }
 }

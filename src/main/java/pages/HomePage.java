@@ -1,8 +1,10 @@
 package pages;
 
+import exceptions.ScreenNotDisplayedException;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 
 public class HomePage extends BasePage {
@@ -14,8 +16,12 @@ public class HomePage extends BasePage {
     }
 
     public boolean isLoginBtnPresent() {
-        WebElement loginButton = wait.waitForElement(loginBtn, 10);
-        return loginButton.isDisplayed();
+        try {
+            WebElement loginButton = wait.waitForElement(loginBtn, 10);
+            return loginButton.isDisplayed();
+        } catch (TimeoutException e) {
+            throw new ScreenNotDisplayedException("Home Screen is not displayed." + "Locator used: " + loginBtn);
+        }
     }
 }
 
