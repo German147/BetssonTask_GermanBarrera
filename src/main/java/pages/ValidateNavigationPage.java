@@ -1,8 +1,10 @@
 package pages;
 
+import exceptions.ElementNotFoundException;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 
 public class ValidateNavigationPage extends BasePage {
@@ -21,12 +23,16 @@ public class ValidateNavigationPage extends BasePage {
     }
 
     public ProductPage tapOnFirsItem() {
-        wait.waitForElement(firstProduct, 15);
+        try {
+            wait.waitForElement(firstProduct, 15);
+        } catch (TimeoutException e) {
+            throw new ElementNotFoundException("The product was not displayed." + "Locator: " + firstProduct);
+        }
         return new ProductPage(driver);
     }
 
-    public boolean isProductPresent(){
-        WebElement text = wait.waitForElement(productText,10);
+    public boolean isProductPresent() {
+        WebElement text = wait.waitForElement(productText, 10);
         return text.isDisplayed();
     }
 

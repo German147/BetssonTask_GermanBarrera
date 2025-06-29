@@ -1,8 +1,10 @@
 package pages;
 
+import exceptions.ElementNotFoundException;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 
 public class ProductPage extends BasePage {
@@ -26,12 +28,16 @@ public class ProductPage extends BasePage {
     }
 
     public void scrollUpAndClickAddToCart() {
-        driver.findElement(AppiumBy.androidUIAutomator(
-                "new UiScrollable(new UiSelector().scrollable(true))" +
-                        ".setMaxSearchSwipes(10)" +
-                        ".scrollBackward()" +
-                        ".scrollIntoView(new UiSelector().text(\"AÑADIR A CARRITO\"))"
-        ));
+        try {
+            driver.findElement(AppiumBy.androidUIAutomator(
+                    "new UiScrollable(new UiSelector().scrollable(true))" +
+                            ".setMaxSearchSwipes(10)" +
+                            ".scrollBackward()" +
+                            ".scrollIntoView(new UiSelector().text(\"AÑADIR A CARRITO\"))"
+            ));
+        } catch (TimeoutException e) {
+            throw new ElementNotFoundException("The app was not scrolled up.");
+        }
 
         driver.findElement(AppiumBy.androidUIAutomator("new UiSelector().text(\"AÑADIR A CARRITO\")")).click();
     }
